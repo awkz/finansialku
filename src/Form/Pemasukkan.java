@@ -342,14 +342,16 @@ public class Pemasukkan extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             if (JOptionPane.showConfirmDialog(null, "Apakah anda ingin menghapus?","warning", 2)== JOptionPane.YES_OPTION) {
-                String sql = "select * from transaksi where jenistransaksi = 'Pemasukkan' ORDER BY `tanggal` ASC";
+                String sql = "DELETE FROM transaksi WHERE id ="+tfKode.getText();
                 Statement stat = new Fungsi.Koneksi().konek.createStatement();
                 int hasil = stat.executeUpdate(sql);
                 
                 if (hasil == 1) {
-                    JOptionPane.showConfirmDialog(null, "Data berhasil dihapus.");
+                    JOptionPane.showMessageDialog(null, "Data telah dihapus","Informasi",JOptionPane.INFORMATION_MESSAGE);
                 }
+                hapusPadaForm();
                 tampilDataKeTabel();
+                
             }
         } catch (Exception e) {
             System.out.println(""+e);
