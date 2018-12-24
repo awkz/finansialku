@@ -25,11 +25,10 @@ public class Pemasukkan extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         new Fungsi.Koneksi().koneksiDatabase();
-        String[] row = {"Tanggal","Keterangan","Nilai"};
+        String[] row = {"Kode","Tanggal","Keterangan","Nilai"};
         tabModel = new DefaultTableModel(null,row);
         tbPemasukkan.setModel(tabModel);
         tampilDataKeTabel();
-        btnHapus.setEnabled(false);
     }
     
     public void tampilDataKeTabel(){
@@ -39,10 +38,11 @@ public class Pemasukkan extends javax.swing.JFrame {
             ResultSet res = stat.executeQuery(sql);
           
             while(res.next()){
+                String kode = res.getString("id");
                 String tanggal = res.getString("tanggal");
                 String keterangan = res.getString("keterangan");
                 String jumlah = res.getString("jumlah");
-                String data[] = {tanggal,keterangan,jumlah};
+                String data[] = {kode,tanggal,keterangan,jumlah};
                 tabModel.addRow(data);
             }
         } catch (Exception e) {
@@ -54,6 +54,33 @@ public class Pemasukkan extends javax.swing.JFrame {
         int row = tabModel.getRowCount();
         for (int i = 0; i < row; i++) {
             tabModel.removeRow(0);
+        }
+    }
+    
+    private void getDataFromTable(){
+        int i = this.tbPemasukkan.getSelectedRow();
+        if (i==-1) {
+            return ;
+        }
+        String kode = (String) tabModel.getValueAt(i, 0);
+        String tanggal = (String) tabModel.getValueAt(i, 1);
+        String keterangan = (String) tabModel.getValueAt(i, 2);
+        String jumlah = (String) tabModel.getValueAt(i, 3);
+        
+        tfKode.setText(kode);
+        tfTanggal.setText(tanggal);
+        tfKeterangan.setText(keterangan);
+        tfJumlah.setText(jumlah);
+        
+        btnEdit.setEnabled(true);
+        btnHapus.setEnabled(true);
+        keyType();
+    }
+    
+    private void keyType(){
+        if (!(tfKeterangan.getText().equals(""))&&!(tfJumlah.getText().equals(""))) {
+            btnSimpan.setEnabled(true);
+            btnBatal.setEnabled(true);
         }
     }
 
@@ -77,6 +104,8 @@ public class Pemasukkan extends javax.swing.JFrame {
         btnEdit = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
         btnBatal = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        tfKode = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbPemasukkan = new javax.swing.JTable();
 
@@ -88,11 +117,24 @@ public class Pemasukkan extends javax.swing.JFrame {
 
         tfTanggal.setEditable(false);
 
+        tfKeterangan.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tfKeteranganPropertyChange(evt);
+            }
+        });
+
+        tfJumlah.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfJumlahKeyTyped(evt);
+            }
+        });
+
         jLabel2.setText("Keterangan");
 
         jLabel3.setText("Jumlah");
 
         btnSimpan.setText("Simpan");
+        btnSimpan.setEnabled(false);
         btnSimpan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSimpanActionPerformed(evt);
@@ -100,15 +142,32 @@ public class Pemasukkan extends javax.swing.JFrame {
         });
 
         btnEdit.setText("Edit");
+        btnEdit.setEnabled(false);
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnHapus.setText("Hapus");
+        btnHapus.setEnabled(false);
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         btnBatal.setText("Batal");
+        btnBatal.setEnabled(false);
         btnBatal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBatalActionPerformed(evt);
             }
         });
+
+        jLabel4.setText("Kode");
+
+        tfKode.setEditable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -117,18 +176,6 @@ public class Pemasukkan extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfTanggal)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(tfJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(tfKeterangan)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSimpan)
@@ -139,13 +186,31 @@ public class Pemasukkan extends javax.swing.JFrame {
                         .addComponent(btnHapus)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBatal)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfTanggal)
+                            .addComponent(tfKeterangan)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(tfJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(tfKode))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(49, 49, 49)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(tfKode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(tfTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -178,6 +243,11 @@ public class Pemasukkan extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbPemasukkan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbPemasukkanMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbPemasukkan);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -232,10 +302,69 @@ public class Pemasukkan extends javax.swing.JFrame {
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         // TODO add your handling code here:
+        tfKode.setText("");
         tfKeterangan.setText("");
         tfJumlah.setText("");
         tfTanggal.setText("");
+        keyType();
     }//GEN-LAST:event_btnBatalActionPerformed
+
+    private void tbPemasukkanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPemasukkanMouseClicked
+        // TODO add your handling code here:
+        getDataFromTable();
+    }//GEN-LAST:event_tbPemasukkanMouseClicked
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        if (!(tfJumlah.getText().equals(""))&&!(tfKeterangan.getText().equals(""))) {
+            try {
+                String sql = "UPDATE transaksi SET keterangan = ?, jumlah = ?, tanggal = ? WHERE id = "+tfKode.getText();
+                PreparedStatement prestat = new Fungsi.Koneksi().konek.prepareStatement(sql);
+                prestat.setString(1,tfKeterangan.getText());
+                prestat.setString(2,tfJumlah.getText());
+                prestat.setString(3,tfJumlah.getText());
+                prestat.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Data telah diedit","Informasi",JOptionPane.INFORMATION_MESSAGE);
+                hapusPadaForm();
+                tampilDataKeTabel();
+                tfKeterangan.setText("");
+                tfJumlah.setText("");
+                tfTanggal.setText("");
+            } catch (Exception e) {
+                System.out.println(""+e);
+            }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Data harus diisi!","Informasi",JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        // TODO add your handling code here:
+        try {
+            if (JOptionPane.showConfirmDialog(null, "Apakah anda ingin menghapus?","warning", 2)== JOptionPane.YES_OPTION) {
+                String sql = "select * from transaksi where jenistransaksi = 'Pemasukkan' ORDER BY `tanggal` ASC";
+                Statement stat = new Fungsi.Koneksi().konek.createStatement();
+                int hasil = stat.executeUpdate(sql);
+                
+                if (hasil == 1) {
+                    JOptionPane.showConfirmDialog(null, "Data berhasil dihapus.");
+                }
+                tampilDataKeTabel();
+            }
+        } catch (Exception e) {
+            System.out.println(""+e);
+        }
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void tfJumlahKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfJumlahKeyTyped
+        // TODO add your handling code here:
+        keyType();
+    }//GEN-LAST:event_tfJumlahKeyTyped
+
+    private void tfKeteranganPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tfKeteranganPropertyChange
+        // TODO add your handling code here:
+        keyType();
+    }//GEN-LAST:event_tfKeteranganPropertyChange
 
     /**
      * @param args the command line arguments
@@ -280,11 +409,13 @@ public class Pemasukkan extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbPemasukkan;
     private javax.swing.JTextField tfJumlah;
     private javax.swing.JTextField tfKeterangan;
+    private javax.swing.JTextField tfKode;
     private javax.swing.JTextField tfTanggal;
     // End of variables declaration//GEN-END:variables
 }
