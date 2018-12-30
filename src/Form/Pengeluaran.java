@@ -20,26 +20,26 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Bara Ramadhan
  */
-public class Pemasukkan extends javax.swing.JFrame {
+public class Pengeluaran extends javax.swing.JFrame {
     private final DefaultTableModel tabModel;
 
     /**
-     * Creates new form Pemasukkan
+     * Creates new form Pengeluaran
      */
-    public Pemasukkan() {
+    public Pengeluaran() {
         initComponents();
         setLocationRelativeTo(null);
         new Fungsi.Koneksi().koneksiDatabase();
         String[] row = {"Kode","Tanggal","Keterangan","Nilai"};
         tabModel = new DefaultTableModel(null,row);
-        tbPemasukkan.setModel(tabModel);
+        tbPengeluaran.setModel(tabModel);
         dcTanggal.setDate(new java.util.Date()); 
         tampilDataKeTabel();
     }
     
     public void tampilDataKeTabel(){
         try {
-            String sql = "select * from transaksi where jenistransaksi = 'Pemasukkan' ORDER BY `tanggal` ASC";
+            String sql = "select * from transaksi where jenistransaksi = 'Pengeluaran' ORDER BY `tanggal` ASC";
             Statement stat = new Fungsi.Koneksi().konek.createStatement();
             ResultSet res = stat.executeQuery(sql);
           
@@ -64,7 +64,7 @@ public class Pemasukkan extends javax.swing.JFrame {
     }
     
     private void getDataFromTable() throws ParseException{
-        int i = this.tbPemasukkan.getSelectedRow();
+        int i = this.tbPengeluaran.getSelectedRow();
         if (i==-1) {
             return ;
         }
@@ -114,11 +114,10 @@ public class Pemasukkan extends javax.swing.JFrame {
         tfKode = new javax.swing.JTextField();
         dcTanggal = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbPemasukkan = new javax.swing.JTable();
+        tbPengeluaran = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Finansialku :: Pemasukkan");
-        setPreferredSize(new java.awt.Dimension(600, 400));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -247,7 +246,7 @@ public class Pemasukkan extends javax.swing.JFrame {
                 .addContainerGap(150, Short.MAX_VALUE))
         );
 
-        tbPemasukkan.setModel(new javax.swing.table.DefaultTableModel(
+        tbPengeluaran.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -258,12 +257,12 @@ public class Pemasukkan extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tbPemasukkan.addMouseListener(new java.awt.event.MouseAdapter() {
+        tbPengeluaran.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbPemasukkanMouseClicked(evt);
+                tbPengeluaranMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tbPemasukkan);
+        jScrollPane1.setViewportView(tbPengeluaran);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -295,13 +294,13 @@ public class Pemasukkan extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (!(tfJumlah.getText().equals(""))&&!(tfKeterangan.getText().equals(""))) {
             try {
-                String sql = "INSERT INTO `transaksi` (`tanggal`, `keterangan`, `jumlah`, `jenistransaksi`, `hitung`) VALUES (?, ?, ?, 'Pemasukkan', ?);";
+                String sql = "INSERT INTO `transaksi` (`tanggal`, `keterangan`, `jumlah`, `jenistransaksi`, `hitung`) VALUES (?, ?, ?, 'Pengeluaran', ?);";
                 PreparedStatement prestat = new Fungsi.Koneksi().konek.prepareStatement(sql);
                 String date=new SimpleDateFormat("yyyy-MM-dd").format(dcTanggal.getDate());
                 prestat.setString(1,date);
                 prestat.setString(2,tfKeterangan.getText());
                 prestat.setString(3,tfJumlah.getText());
-                prestat.setString(4,tfJumlah.getText());
+                prestat.setInt(4,(Integer.parseInt(tfJumlah.getText())*-1));
                 prestat.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Data telah disimpan","Informasi",JOptionPane.INFORMATION_MESSAGE);
                 hapusPadaForm();
@@ -326,20 +325,20 @@ public class Pemasukkan extends javax.swing.JFrame {
         keyType();
     }//GEN-LAST:event_btnBatalActionPerformed
 
-    private void tbPemasukkanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPemasukkanMouseClicked
+    private void tbPengeluaranMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPengeluaranMouseClicked
         try {
             // TODO add your handling code here:
             getDataFromTable();
         } catch (ParseException ex) {
-            Logger.getLogger(Pemasukkan.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Pengeluaran.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_tbPemasukkanMouseClicked
+    }//GEN-LAST:event_tbPengeluaranMouseClicked
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
         if (!(tfJumlah.getText().equals(""))&&!(tfKeterangan.getText().equals(""))) {
             try {
-                String sql = "UPDATE transaksi SET keterangan = ?, jumlah = ?, tanggal = ?,hitung = ? WHERE id = "+tfKode.getText();
+                String sql = "UPDATE transaksi SET keterangan = ?, jumlah = ?, tanggal = ?,hitung= ? WHERE id = "+tfKode.getText();
                 PreparedStatement prestat = new Fungsi.Koneksi().konek.prepareStatement(sql);
                 prestat.setString(1,tfKeterangan.getText());
                 prestat.setString(2,tfJumlah.getText());
@@ -415,20 +414,21 @@ public class Pemasukkan extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Pemasukkan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pengeluaran.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Pemasukkan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pengeluaran.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Pemasukkan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pengeluaran.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Pemasukkan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pengeluaran.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Pemasukkan().setVisible(true);
+                new Pengeluaran().setVisible(true);
             }
         });
     }
@@ -445,7 +445,7 @@ public class Pemasukkan extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tbPemasukkan;
+    private javax.swing.JTable tbPengeluaran;
     private javax.swing.JTextField tfJumlah;
     private javax.swing.JTextField tfKeterangan;
     private javax.swing.JTextField tfKode;

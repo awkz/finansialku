@@ -5,6 +5,7 @@
  */
 package Form;
 
+import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 
@@ -21,6 +22,53 @@ public class MenuUtama extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         new Fungsi.Koneksi().koneksiDatabase();
+        getPengeluaran();
+        getPemasukkan();
+        getSaldo();
+    }
+    
+    public void getPengeluaran(){
+        try {
+            String sql = "select sum(jumlah) as pengeluaran from transaksi where jenistransaksi = 'Pengeluaran' ORDER BY `tanggal` ASC";
+            Statement stat = new Fungsi.Koneksi().konek.createStatement();
+            ResultSet res = stat.executeQuery(sql);
+          
+            if(res.first()){
+                String pengeluaran = res.getString("pengeluaran");
+                lbPengeluaran.setText(pengeluaran);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    public void getPemasukkan(){
+        try {
+            String sql = "select sum(jumlah) as pemasukkan from transaksi where jenistransaksi = 'Pemasukkan' ORDER BY `tanggal` ASC";
+            Statement stat = new Fungsi.Koneksi().konek.createStatement();
+            ResultSet res = stat.executeQuery(sql);
+          
+            if(res.first()){
+                String pemasukkan = res.getString("pemasukkan");
+                lbPemasukkan.setText(pemasukkan);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void getSaldo(){
+        try {
+            String sql = "select sum(hitung) as saldo from transaksi ORDER BY `tanggal` ASC";
+            Statement stat = new Fungsi.Koneksi().konek.createStatement();
+            ResultSet res = stat.executeQuery(sql);
+          
+            if(res.first()){
+                String saldo = res.getString("saldo");
+                lbSaldo.setText(saldo);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -36,6 +84,9 @@ public class MenuUtama extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        lbPemasukkan = new javax.swing.JLabel();
+        lbSaldo = new javax.swing.JLabel();
+        lbPengeluaran = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -43,6 +94,7 @@ public class MenuUtama extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -51,7 +103,6 @@ public class MenuUtama extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
 
         jMenuItem5.setText("jMenuItem5");
 
@@ -71,17 +122,32 @@ public class MenuUtama extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(0, 255, 51));
         jLabel3.setText("Saldo ");
 
+        lbPemasukkan.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbPemasukkan.setForeground(new java.awt.Color(51, 51, 255));
+        lbPemasukkan.setText("0");
+        lbPemasukkan.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
+        lbSaldo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbSaldo.setForeground(new java.awt.Color(0, 255, 51));
+        lbSaldo.setText("0");
+        lbSaldo.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
+        lbPengeluaran.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbPengeluaran.setForeground(new java.awt.Color(255, 0, 51));
+        lbPengeluaran.setText("0");
+        lbPengeluaran.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(51, 51, 255));
-        jLabel4.setText("0");
+        jLabel4.setText("Rp");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 255, 51));
-        jLabel5.setText("0");
+        jLabel5.setForeground(new java.awt.Color(255, 0, 51));
+        jLabel5.setText("Rp");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 0, 51));
-        jLabel6.setText("0");
+        jLabel6.setForeground(new java.awt.Color(0, 255, 51));
+        jLabel6.setText("Rp");
 
         jMenu1.setText("Master");
 
@@ -100,6 +166,14 @@ public class MenuUtama extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem9);
+
+        jMenuItem10.setText("About");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem10);
 
         jMenuItem4.setText("Keluar");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
@@ -144,9 +218,6 @@ public class MenuUtama extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu4.setText("About");
-        jMenuBar1.add(jMenu4);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -159,12 +230,17 @@ public class MenuUtama extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
                     .addComponent(jLabel1))
-                .addGap(18, 18, 18)
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
                     .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel4))
-                .addContainerGap(238, Short.MAX_VALUE))
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lbPemasukkan, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                    .addComponent(lbPengeluaran, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,9 +250,15 @@ public class MenuUtama extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel6)
+                        .addComponent(jLabel5)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel5))
+                        .addComponent(jLabel6))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbPemasukkan)
+                        .addGap(18, 18, 18)
+                        .addComponent(lbPengeluaran)
+                        .addGap(18, 18, 18)
+                        .addComponent(lbSaldo))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
@@ -228,8 +310,14 @@ public class MenuUtama extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        
+        setVisible(false);
+        new Pengeluaran().setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        // TODO add your handling code here:
+        new About().setVisible(true);
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -276,9 +364,9 @@ public class MenuUtama extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -287,5 +375,8 @@ public class MenuUtama extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JLabel lbPemasukkan;
+    private javax.swing.JLabel lbPengeluaran;
+    private javax.swing.JLabel lbSaldo;
     // End of variables declaration//GEN-END:variables
 }
