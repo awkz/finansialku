@@ -216,9 +216,19 @@ public class MenuUtama extends javax.swing.JFrame {
         jMenu3.add(jMenuItem6);
 
         jMenuItem7.setText("Lap. Pengeluaran");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem7);
 
         jMenuItem8.setText("Lap. Transaksi");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem8);
 
         jMenuBar1.add(jMenu3);
@@ -329,6 +339,18 @@ public class MenuUtama extends javax.swing.JFrame {
         setVisible(false);
         new LaporanPemasukkan().setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+        new LaporanPengeluaran().setVisible(true);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+        new LaporanTransaksi().setVisible(true);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     /**
      * @param args the command line arguments

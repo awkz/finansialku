@@ -21,7 +21,7 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author Bara Ramadhan
  */
-public class LaporanPemasukkan extends javax.swing.JFrame  {
+public class LaporanPengeluaran extends javax.swing.JFrame  {
     
     private JasperDesign jasDes;
     
@@ -32,7 +32,7 @@ public class LaporanPemasukkan extends javax.swing.JFrame  {
     /**
      * Creates new form LaporanPemasukkan
      */
-    public LaporanPemasukkan() {
+    public LaporanPengeluaran() {
         initComponents();
         new Fungsi.Koneksi().koneksiDatabase();
         setLocationRelativeTo(null);
@@ -55,7 +55,7 @@ public class LaporanPemasukkan extends javax.swing.JFrame  {
         btnCari = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Laporan Pemasukkan");
+        setTitle("Laporan Pengeluaran");
         setPreferredSize(new java.awt.Dimension(600, 400));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -126,7 +126,7 @@ public class LaporanPemasukkan extends javax.swing.JFrame  {
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
         // TODO add your handling code here:
         try {
-            File file = new File("src/Laporan/lapPemasukkan.jrxml");
+            File file = new File("src/Laporan/lapPengeluaran.jrxml");
             jasDes = JRXmlLoader.load(file);
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             String tglAwal = format.format(new java.sql.Date(dcAwal.getDate().getTime()));
@@ -146,6 +146,7 @@ public class LaporanPemasukkan extends javax.swing.JFrame  {
         setVisible(false);
         new MenuUtama().setVisible(true);
     }//GEN-LAST:event_formWindowClosed
+
     
     
     /**
@@ -165,14 +166,18 @@ public class LaporanPemasukkan extends javax.swing.JFrame  {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LaporanPemasukkan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LaporanPengeluaran.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LaporanPemasukkan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LaporanPengeluaran.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LaporanPemasukkan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LaporanPengeluaran.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LaporanPemasukkan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LaporanPengeluaran.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -181,7 +186,7 @@ public class LaporanPemasukkan extends javax.swing.JFrame  {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LaporanPemasukkan().setVisible(true);
+                new LaporanPengeluaran().setVisible(true);
             }
         });
     }
