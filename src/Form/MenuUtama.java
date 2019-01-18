@@ -208,6 +208,11 @@ public class MenuUtama extends javax.swing.JFrame {
         jMenu3.setText("Laporan");
 
         jMenuItem6.setText("Lap. Pemasukkan");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem6);
 
         jMenuItem7.setText("Lap. Pengeluaran");
@@ -318,6 +323,12 @@ public class MenuUtama extends javax.swing.JFrame {
         // TODO add your handling code here:
         new About().setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+        new LaporanPemasukkan().setVisible(true);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -1,0 +1,1 @@
+SELECT * FROM transaksi WHERE tanggal BETWEEN $P{awal} AND $P{akhir} AND jenistransaksi = 'Pemasukkan' ORDER BY tanggal ASC
