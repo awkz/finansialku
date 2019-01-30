@@ -55,7 +55,7 @@ public class LaporanPemasukkan extends javax.swing.JFrame  {
         btnCari = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Laporan Pemasukkan");
+        setTitle("Finansialku :: Laporan Pemasukkan");
         setPreferredSize(new java.awt.Dimension(600, 400));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {

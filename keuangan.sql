@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 23 Des 2018 pada 18.31
+-- Generation Time: 30 Jan 2019 pada 14.47
 -- Versi Server: 5.7.17-log
 -- PHP Version: 5.6.30
 
@@ -28,21 +28,13 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `transaksi` (
   `id` int(11) NOT NULL,
-  `tanggal` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tanggal` date DEFAULT NULL,
   `keterangan` varchar(200) NOT NULL,
   `jumlah` decimal(15,0) NOT NULL,
-  `jenistransaksi` varchar(12) NOT NULL DEFAULT 'Pemasukan',
-  `hitung` decimal(10,0) NOT NULL
+  `jenistransaksi` varchar(12) NOT NULL DEFAULT 'Pemasukkan',
+  `hitung` decimal(10,0) NOT NULL,
+  `datelog` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data untuk tabel `transaksi`
---
-
-INSERT INTO `transaksi` (`id`, `tanggal`, `keterangan`, `jumlah`, `jenistransaksi`, `hitung`) VALUES
-(1, '2018-12-23 12:54:59', 'Gaji', '2500000', 'Pemasukkan', '2500000'),
-(2, '2018-12-23 13:09:27', 'beli pulsa', '100000', 'Pengeluaran', '-100000'),
-(3, '2018-12-24 01:01:27', 'sogoan', '100000', 'Pemasukkan', '100000');
 
 -- --------------------------------------------------------
 
@@ -62,7 +54,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`username`, `password`, `status`, `lastlogin`) VALUES
-('admin', '21232f297a57a5a743894a0e4a801fc3', 'aktif', '2018-12-22 17:18:46');
+('admin', '21232f297a57a5a743894a0e4a801fc3', 'aktif', '2019-01-29 07:06:56');
 
 --
 -- Indexes for dumped tables
@@ -88,7 +80,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
